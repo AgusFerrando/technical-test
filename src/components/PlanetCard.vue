@@ -6,10 +6,18 @@ import { defineProps, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 
 interface PlanetCardProps {
-  result: PlanetInterface
+  result: PlanetInterface,
+  isFavorite: boolean
 }
 
 const props = defineProps<PlanetCardProps>()
+
+const emit = defineEmits(['toggleFavorite']);
+
+const toggleFavorite = () => {
+  emit('toggleFavorite', props.result);
+};
+
 const router = useRouter()
 const allMovies = ref<MoviesInterface[]>([])
 
@@ -39,13 +47,13 @@ onMounted(async () => {
   >
     <div
       class="flex flex-col flex-1 cursor-pointer"
-      @click="goToDetail(result.name)"
+      
     >
       <div class="flex flex-row justify-between relative">
-        <h1 class="text-purple-light font-semibold text-sm">
+        <h1 class="text-purple-light font-semibold text-sm" @click="goToDetail(result.name)">
           {{ result.name }}
         </h1>
-        <i class="material-icons absolute right-0"> favorite </i>
+        <i class="material-icons absolute right-0" @click="toggleFavorite" :class="{'text-red-500': isFavorite, 'text-gray-500': !isFavorite}"> favorite </i>
       </div>
 
       <h2 class="text-dark text-xs italic mt-2">Films:</h2>

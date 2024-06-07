@@ -13,14 +13,14 @@ const planet = ref<PlanetInterface>()
 
 onBeforeMount(async () => {
   allPlanets.value = await getAllPlanets()
-  planet.value = allPlanets.value.filter((item)=> item.name === params)
-  console.log(planet.value)
+  planet.value = allPlanets.value.find((item)=> item.name === params)
+  console.log('planet', planet.value)
 })
 
 </script>
 
 <template>
-  <main>
+  <main class="flex flex-col items-center justify-items-center">
     <PlanetDetailCard :planet={planet} />
   </main>
 </template>

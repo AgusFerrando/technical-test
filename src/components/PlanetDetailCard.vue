@@ -1,30 +1,115 @@
 <script setup lang="ts">
 import type MoviesInterface from "@/utils/interfaces/moviesInterface"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
-import { defineProps, onMounted, ref } from "vue"
-
+import axios from "axios"
+import { defineProps, onBeforeMount, ref } from "vue"
 
 interface PlanetDetailProps {
   planet: PlanetInterface
 }
-
 const props = defineProps<PlanetDetailProps>()
+console.log('props')
 
+const residents = ref<string[]>([])
+const films = ref<string[]>([])
+
+const getFilms = async() => {
+  props.planet.planet.films.forEach(async (film: string) => {
+    try {
+      const result = await axios.get(film)
+      films.value.push(result.data.title)
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  })
+}
+
+const getResidents = async() => {
+  props.planet.planet.residents.forEach(async (resident: string) => {
+    try {
+      const result = await axios.get(resident)
+      residents.value.push(result.data.name)
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  })
+}
+
+onBeforeMount(async () => {
+  await getFilms();
+  await getResidents();
+})
 </script>
 
 <template>
-  <main
-    class="flex py-6 px-3 m-4 bg-white rounded-md shadow-md cursor-pointer w-36 min-h-2/6"
-  >
-    <div class="flex flex-col flex-1">
-      <div v-for="(item, index) in planet" :key="index">
-          <div v-for="(i, index) in item" :key="index">
-            <h1> {{ i.name }} </h1>
-            <span>
-              <p><span></span></p>
+  <main class="flex m-4 bg-white rounded-md shadow-md w-[90%] min-h-36 relative">
+    <router-link to="/">
+      <i class="material-icons absolute right-2 md:right-5 top-5">home</i>
+    </router-link>
+    <div class="flex flex-col flex-1 items-center p-6 mt-6">
+      <h1 class=" text-2xl md:text-5xl text-secondary-text text-bold ">
+        {{ planet.planet.name }}
+      </h1>
+      <ul class="w-[90%] flex flex-col items-center md:items-start my-4 gap-6 text-sm md:text-xl">
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Rotation period: </span>
+          {{ planet.planet.rotation_period }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Orbital period: </span>
+          {{ planet.planet.orbital_period }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Diameter: </span>
+          {{ planet.planet.diameter }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Climate: </span>
+          {{ planet.planet.climate }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Gravity: </span>
+          {{ planet.planet.gravity }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Terrain: </span>
+          {{ planet.planet.terrain }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Surface_water: </span>
+          {{ planet.planet.surface_water }}
+        </li>
+        <li class="text-primary-text">
+          <span class="italic text-purple-light mr-2">Population: </span>
+          {{ planet.planet.population }}
+        </li>
+        <li class="text-primary-text flex flex-row">
+          <span class="italic text-purple-light mr-2">Residents:</span>
+          <div>
+            <span
+              v-for="(film, index) in residents"
+              :key="index"
+              class="flex flex-col"
+            >
+              {{ film }}
             </span>
           </div>
-      </div>
+        </li>
+        <li class="text-primary-text flex flex-row">
+          <span class="italic text-purple-light mr-2">Films:</span>
+          <div>
+            <span
+              v-for="(film, index) in films"
+              :key="index"
+              class="flex flex-col"
+            >
+              {{ film }}
+            </span>
+          </div>
+        </li>
+      </ul>
     </div>
   </main>
 </template>
