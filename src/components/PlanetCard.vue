@@ -50,7 +50,7 @@ onMounted(async () => {
       
     >
       <div class="flex flex-row justify-between relative">
-        <h1 class="text-purple-light font-semibold text-sm" @click="goToDetail(result.name)">
+        <h1 class="text-purple-light font-semibold text-md hover:text-purple" @click="goToDetail(result.name)">
           {{ result.name }}
         </h1>
         <i class="material-icons absolute right-0" @click="toggleFavorite" :class="{'text-red-500': isFavorite, 'text-gray-500': !isFavorite}"> favorite </i>

@@ -46,7 +46,7 @@ onBeforeMount(async () => {
 <template>
   <main class="flex m-4 bg-white rounded-md shadow-md w-[90%] min-h-36 relative">
     <router-link to="/">
-      <i class="material-icons absolute right-2 md:right-5 top-5">home</i>
+      <i class="material-icons absolute right-2 md:right-5 top-5 hover:text-gray-500">home</i>
     </router-link>
     <div class="flex flex-col flex-1 items-center p-6 mt-6">
       <h1 class=" text-2xl md:text-5xl text-secondary-text text-bold ">

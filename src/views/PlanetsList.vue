@@ -65,7 +65,7 @@ const isFavorite = (planet: PlanetInterface) => {
           class="py-2 px-1 md:w-1/4 w-1/2 bg-transparent border-b focus:border-purple focus:outline-none text-primary-text"
         />
         <button @click="showFavoritesOnly = !showFavoritesOnly" class="flex flex-col items-center text-sm">
-          <i class="material-icons text-red-500 "> favorite </i>
+          <i class="material-icons text-red-500 hover:text-red-700"> favorite </i>
           Favorites
         </button>
       </section>
