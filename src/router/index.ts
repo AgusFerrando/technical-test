@@ -11,7 +11,7 @@ const router = createRouter({
       component: PlanetsList
     },
     {
-      path: '/planet-detail/:name',
+      path: '/planet-detail/:id',
       name: 'PlanetDetail',
       component: PlanetDetail
     },

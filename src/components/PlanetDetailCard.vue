@@ -5,16 +5,17 @@ import axios from "axios"
 import { defineProps, onBeforeMount, ref } from "vue"
 
 interface PlanetDetailProps {
-  planet: PlanetInterface
+  planet?: PlanetInterface
 }
 const props = defineProps<PlanetDetailProps>()
-console.log('props')
+const { planet } = props
+console.log("props", planet)
 
 const residents = ref<string[]>([])
 const films = ref<string[]>([])
 
-const getFilms = async() => {
-  props.planet.planet.films.forEach(async (film: string) => {
+const getFilms = async () => {
+  planet?.films.forEach(async (film: string) => {
     try {
       const result = await axios.get(film)
       films.value.push(result.data.title)
@@ -25,8 +26,8 @@ const getFilms = async() => {
   })
 }
 
-const getResidents = async() => {
-  props.planet.planet.residents.forEach(async (resident: string) => {
+const getResidents = async () => {
+  planet?.residents.forEach(async (resident: string) => {
     try {
       const result = await axios.get(resident)
       residents.value.push(result.data.name)
@@ -38,52 +39,59 @@ const getResidents = async() => {
 }
 
 onBeforeMount(async () => {
-  await getFilms();
-  await getResidents();
+  await getFilms()
+  await getResidents()
 })
 </script>
 
 <template>
-  <main class="flex m-4 bg-white rounded-md shadow-md w-[90%] min-h-36 relative">
+  <main
+    class="flex bg-white rounded-md shadow-md m-12 relative"
+  >
     <router-link to="/">
-      <i class="material-icons absolute right-2 md:right-5 top-5 hover:text-gray-500">home</i>
+      <i
+        class="material-icons absolute right-2 md:right-5 top-5 hover:text-gray-500"
+        >home</i
+      >
     </router-link>
     <div class="flex flex-col flex-1 items-center p-6 mt-6">
-      <h1 class=" text-2xl md:text-5xl text-secondary-text text-bold ">
-        {{ planet.planet.name }}
+      <h1 class="text-2xl md:text-5xl text-secondary-text text-bold">
+        {{ planet?.name }}
       </h1>
-      <ul class="w-[90%] flex flex-col items-center md:items-start my-4 gap-6 text-sm md:text-xl">
+      <ul
+        class="w-[90%] flex flex-col items-center md:items-start my-4 gap-6 text-sm md:text-xl"
+      >
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Rotation period: </span>
-          {{ planet.planet.rotation_period }}
+          {{ planet?.rotation_period }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Orbital period: </span>
-          {{ planet.planet.orbital_period }}
+          {{ planet?.orbital_period }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Diameter: </span>
-          {{ planet.planet.diameter }}
+          {{ planet?.diameter }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Climate: </span>
-          {{ planet.planet.climate }}
+          {{ planet?.climate }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Gravity: </span>
-          {{ planet.planet.gravity }}
+          {{ planet?.gravity }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Terrain: </span>
-          {{ planet.planet.terrain }}
+          {{ planet?.terrain }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Surface_water: </span>
-          {{ planet.planet.surface_water }}
+          {{ planet?.surface_water }}
         </li>
         <li class="text-primary-text">
           <span class="italic text-purple-light mr-2">Population: </span>
-          {{ planet.planet.population }}
+          {{ planet?.population }}
         </li>
         <li class="text-primary-text flex flex-row">
           <span class="italic text-purple-light mr-2">Residents:</span>

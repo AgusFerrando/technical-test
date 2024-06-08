@@ -6,17 +6,17 @@ import { defineProps, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 
 interface PlanetCardProps {
-  result: PlanetInterface,
+  result: PlanetInterface
   isFavorite: boolean
 }
 
 const props = defineProps<PlanetCardProps>()
 
-const emit = defineEmits(['toggleFavorite']);
+const emit = defineEmits(["toggleFavorite"])
 
 const toggleFavorite = () => {
-  emit('toggleFavorite', props.result);
-};
+  emit("toggleFavorite", props.result)
+}
 
 const router = useRouter()
 const allMovies = ref<MoviesInterface[]>([])
@@ -32,8 +32,10 @@ const getAllMoviesInPlanet = async () => {
   })
 }
 
-const goToDetail = (name: string) => {
-  router.push(`/planet-detail/${name}`)
+const goToDetail = (url: string) => {
+  const parts = url.split('/');
+  const id =  parts[parts.length - 2];
+  router.push(`/planet-detail/${id}`)
 }
 
 onMounted(async () => {
@@ -43,17 +45,23 @@ onMounted(async () => {
 
 <template>
   <div
-    class="flex py-6 px-3 m-4 bg-white rounded-md shadow-md cursor-pointer w-36 min-h-2/6"
+    class="flex py-6 px-3 m-4 bg-white rounded-md shadow-md w-36 min-h-2/6"
   >
-    <div
-      class="flex flex-col flex-1 cursor-pointer"
-      
-    >
+    <div class="flex flex-col flex-1">
       <div class="flex flex-row justify-between relative">
-        <h1 class="text-purple-light font-semibold text-md hover:text-purple" @click="goToDetail(result.name)">
+        <h1
+          class="text-purple-light font-semibold text-md hover:text-purple cursor-pointer"
+          @click="goToDetail(result.url)"
+        >
           {{ result.name }}
         </h1>
-        <i class="material-icons absolute right-0" @click="toggleFavorite" :class="{'text-red-500': isFavorite, 'text-gray-500': !isFavorite}"> favorite </i>
+        <i
+          class="material-icons absolute right-0 cursor-pointer"
+          @click="toggleFavorite"
+          :class="{ 'text-red-500 hover:text-red-700': isFavorite, 'text-gray-500 hover:text-gray-700': !isFavorite }"
+        >
+          favorite
+        </i>
       </div>
 
       <h2 class="text-dark text-xs italic mt-2">Films:</h2>

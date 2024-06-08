@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, computed } from "vue"
-import { useRouter } from "vue-router"
 import PlanetCard from "@/components/PlanetCard.vue"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
-import { getAllPlanets } from "@/utils/api/getAllPlanets"
+import { getPlanets } from "@/utils/api/getPlanets"
 import { useFavoritesStore } from "@/store/useFavoritesStore"
 
-const router = useRouter()
 const favoritesStore = useFavoritesStore()
 const searchQuery = ref<string>("")
 const searchResults = ref<PlanetInterface[]>([])
 const isLoading = ref<boolean>(true)
 const searchError = ref<boolean>(false)
 const showFavoritesOnly = ref<boolean>(false)
+const currentPage = ref<number>(1)
+const totalPages = ref<number>(1)
 
 onBeforeMount(async () => {
   try {
-    searchResults.value = await getAllPlanets()
+    const response = await getPlanets(currentPage.value)
+    searchResults.value = response.results
+    totalPages.value = Math.ceil(response.count / 10) 
   } catch (error) {
     console.error("Error fetching planets:", error)
     searchError.value = true
@@ -49,6 +51,24 @@ const isFavorite = (planet: PlanetInterface) => {
   console.log("store", favoritesStore.favorites)
   return favoritesStore.isFavorite(planet)
 }
+
+const nextPage = async () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+    const newPlanetList = await getPlanets(currentPage.value)
+    searchResults.value = newPlanetList.results
+
+  }
+}
+
+const prevPage = async () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+    const newPlanetList = await getPlanets(currentPage.value)
+    searchResults.value = newPlanetList.results
+
+  }
+}
 </script>
 
 <template>
@@ -64,8 +84,15 @@ const isFavorite = (planet: PlanetInterface) => {
           placeholder="Search for a planet"
           class="py-2 px-1 md:w-1/4 w-1/2 bg-transparent border-b focus:border-purple focus:outline-none text-primary-text"
         />
-        <button @click="showFavoritesOnly = !showFavoritesOnly" class="flex flex-col items-center text-sm">
-          <i class="material-icons text-red-500 hover:text-red-700"> favorite </i>
+        <button
+          @click="showFavoritesOnly = !showFavoritesOnly"
+          class="flex flex-col items-center text-sm"
+        >
+          <i
+            class="material-icons text-red-500 hover:text-red-700 cursor-pointer"
+          >
+            favorite
+          </i>
           Favorites
         </button>
       </section>
@@ -95,6 +122,14 @@ const isFavorite = (planet: PlanetInterface) => {
         >
           No results match your query, try a different term.
         </p>
+        <div class="flex justify-center gap-8 mt-4 ">
+          <button @click="prevPage" :disabled="currentPage === 1" class="py-2 px-4 bg-purple-light text-white rounded disabled:opacity-50">
+            Back
+          </button>
+          <button @click="nextPage" :disabled="currentPage === totalPages" class="py-2 px-4 bg-purple-light text-white rounded disabled:opacity-50">
+            Next
+          </button>
+        </div>
       </div>
     </div>
   </main>
