@@ -22,9 +22,7 @@ This project is a technical test that utilizes Vue 3 with the Composition API, T
 
 ## Branches
 
-Branch Main - used in Production
-Branch Dev - used for PR
-https://dev.to/marianocodes/por-que-trunk-based-development-i5n
+Branch Main - only branch used in this project.
 
 The name of each developer's branch will have to parts separated by "/". The first part will have one of the following words:
 feature: for a new feature
@@ -35,15 +33,10 @@ After one of those words we will put "/" followed by the id and a little explana
 
 - The name of each commit must have two parts separated by ":" the first one will have one of the following words:
 - feat: A new feature
-- fix: A bug fix
+- fix: A bug fix 
 - docs: Documentation only changes
 - style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-- refactor: A code change that neither fixes a bug nor adds a feature
-- perf: A code change that improves performance
-- test: Adding missing or correcting existing tests
-- chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
-After one of those words, we will put "::" followed by the short explanation of what we did in that commit.
-You can find more information in: https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines
+After one of those words, we will put ":" followed by the short explanation of what we did in that commit.
 
 ## Contact
 
