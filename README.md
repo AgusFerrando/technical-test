@@ -5,12 +5,20 @@ This project is a technical test that utilizes Vue 3 with the Composition API, T
 
 ## Installation
 
-1- Install Visual Studio Code https://code.visualstudio.com/download
+1- Install Visual Studio Code https://code.visualstudio.com/download  
+
 2- Install Node.js https://nodejs.org/en/download
-3- Clone the repository: 
-4- Install dependencies: npm install
-5- Compile for development: npm run dev
-6- Compile for production: npm run build
+ 
+3- Clone the repository: https://github.com/AgusFerrando/technical-test.git  
+
+4- Install dependencies: npm install  
+
+5- Compile for development: npm run dev  
+
+6- Compile for production: npm run build  
+
+7- Run tests: npm run test
+
 
 ## Branches
 
