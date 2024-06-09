@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import PlanetDetailCard from "@/components/PlanetDetailCard.vue"
-import { getPlanet } from "@/utils/api/getPlanet"
+import { getPlanet } from "@/services/getPlanet"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
 import { onBeforeMount, ref } from "vue"
 import { useRoute } from "vue-router"
 
-
 const route = useRoute()
 const params = route.params.id
-console.log('params', params)
 const allPlanets = ref<PlanetInterface[]>([])
 const planet = ref<PlanetInterface>()
 const isLoading = ref<boolean>(true)
@@ -21,8 +19,8 @@ onBeforeMount(async () => {
   } finally {
     isLoading.value = false
   }
-  
-  console.log('oneplanet', planet.value)
+
+  console.log("oneplanet", planet.value)
 })
 </script>
 
@@ -34,6 +32,5 @@ onBeforeMount(async () => {
     <div v-else class="w-full h-full">
       <PlanetDetailCard :planet="planet" />
     </div>
-    
   </main>
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getMoviesInPlanet } from "@/utils/api/getMoviesInPlanet"
+import { getMoviesInPlanet } from "@/services/getMoviesInPlanet"
 import type MoviesInterface from "@/utils/interfaces/moviesInterface"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
-import { defineProps, onMounted, ref } from "vue"
+import { defineProps, onBeforeMount, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 
 interface PlanetCardProps {
@@ -21,24 +21,13 @@ const toggleFavorite = () => {
 const router = useRouter()
 const allMovies = ref<MoviesInterface[]>([])
 
-// const getAllMoviesInPlanet = async () => {
-//   props.result.films.forEach(async (film) => {
-//     try {
-//       const result = await axios.get(film)
-//       allMovies.value.push(result.data)
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   })
-// }
-
 const goToDetail = (url: string) => {
   const parts = url.split("/")
   const id = parts[parts.length - 2]
   router.push(`/planet-detail/${id}`)
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
   props.result.films.forEach(async (film) => {
     const movie = await getMoviesInPlanet(film)
     allMovies.value.push(movie)

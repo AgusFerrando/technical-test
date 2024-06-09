@@ -2,7 +2,7 @@
 import { ref, onBeforeMount, computed } from "vue"
 import PlanetCard from "@/components/PlanetCard.vue"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
-import { getPlanets } from "@/utils/api/getPlanets"
+import { getPlanets } from "@/services/getPlanets"
 import { useFavoritesStore } from "@/store/useFavoritesStore"
 
 const favoritesStore = useFavoritesStore()
@@ -18,7 +18,7 @@ onBeforeMount(async () => {
   try {
     const response = await getPlanets(currentPage.value)
     searchResults.value = response.results
-    totalPages.value = Math.ceil(response.count / 10) 
+    totalPages.value = Math.ceil(response.count / 10)
   } catch (error) {
     console.error("Error fetching planets:", error)
     searchError.value = true
@@ -57,7 +57,6 @@ const nextPage = async () => {
     currentPage.value++
     const newPlanetList = await getPlanets(currentPage.value)
     searchResults.value = newPlanetList.results
-
   }
 }
 
@@ -66,7 +65,6 @@ const prevPage = async () => {
     currentPage.value--
     const newPlanetList = await getPlanets(currentPage.value)
     searchResults.value = newPlanetList.results
-
   }
 }
 </script>
@@ -122,11 +120,19 @@ const prevPage = async () => {
         >
           No results match your query, try a different term.
         </p>
-        <div class="flex justify-center gap-8 mt-4 ">
-          <button @click="prevPage" :disabled="currentPage === 1" class="py-2 px-4 bg-purple-light text-white rounded disabled:opacity-50">
+        <div class="flex justify-center gap-8 mt-4">
+          <button
+            @click="prevPage"
+            :disabled="currentPage === 1"
+            class="py-2 px-4 bg-purple-light text-white rounded disabled:opacity-50"
+          >
             Back
           </button>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="py-2 px-4 bg-purple-light text-white rounded disabled:opacity-50">
+          <button
+            @click="nextPage"
+            :disabled="currentPage === totalPages"
+            class="py-2 px-4 bg-purple-light text-white rounded disabled:opacity-50"
+          >
             Next
           </button>
         </div>

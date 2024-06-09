@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getArrayValues } from "@/utils/api/getArrayValues";
+import { getArrayValues } from "@/services/getArrayValues"
 import type MoviesInterface from "@/utils/interfaces/moviesInterface"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
 import axios from "axios"
@@ -10,13 +10,10 @@ interface PlanetDetailProps {
 }
 const props = defineProps<PlanetDetailProps>()
 const { planet } = props
-console.log("props", planet)
-
 const residents = ref<string[]>([])
 const films = ref<string[]>([])
 
 onBeforeMount(async () => {
-
   planet?.films.forEach(async (film: string) => {
     const movie: any = await getArrayValues(film)
     films.value.push(movie.title)
@@ -26,14 +23,11 @@ onBeforeMount(async () => {
     const res: any = await getArrayValues(resident)
     residents.value.push(res.name)
   })
-  
 })
 </script>
 
 <template>
-  <main
-    class="flex bg-white rounded-md shadow-md m-12 relative"
-  >
+  <main class="flex bg-white rounded-md shadow-md m-12 relative">
     <router-link to="/">
       <i
         class="material-icons absolute right-2 md:right-5 top-5 hover:text-gray-500"
