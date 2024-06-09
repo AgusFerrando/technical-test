@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { getMoviesInPlanet } from "@/utils/api/getMoviesInPlanet"
 import type MoviesInterface from "@/utils/interfaces/moviesInterface"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
-import axios from "axios"
 import { defineProps, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 
@@ -21,32 +21,33 @@ const toggleFavorite = () => {
 const router = useRouter()
 const allMovies = ref<MoviesInterface[]>([])
 
-const getAllMoviesInPlanet = async () => {
-  props.result.films.forEach(async (film) => {
-    try {
-      const result = await axios.get(film)
-      allMovies.value.push(result.data)
-    } catch (error) {
-      console.log(error)
-    }
-  })
-}
+// const getAllMoviesInPlanet = async () => {
+//   props.result.films.forEach(async (film) => {
+//     try {
+//       const result = await axios.get(film)
+//       allMovies.value.push(result.data)
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   })
+// }
 
 const goToDetail = (url: string) => {
-  const parts = url.split('/');
-  const id =  parts[parts.length - 2];
+  const parts = url.split("/")
+  const id = parts[parts.length - 2]
   router.push(`/planet-detail/${id}`)
 }
 
 onMounted(async () => {
-  await getAllMoviesInPlanet()
+  props.result.films.forEach(async (film) => {
+    const movie = await getMoviesInPlanet(film)
+    allMovies.value.push(movie)
+  })
 })
 </script>
 
 <template>
-  <div
-    class="flex py-6 px-3 m-4 bg-white rounded-md shadow-md w-36 min-h-2/6"
-  >
+  <div class="flex py-6 px-3 m-4 bg-white rounded-md shadow-md w-36 min-h-2/6">
     <div class="flex flex-col flex-1">
       <div class="flex flex-row justify-between relative">
         <h1
@@ -58,7 +59,10 @@ onMounted(async () => {
         <i
           class="material-icons absolute right-0 cursor-pointer"
           @click="toggleFavorite"
-          :class="{ 'text-red-500 hover:text-red-700': isFavorite, 'text-gray-500 hover:text-gray-700': !isFavorite }"
+          :class="{
+            'text-red-500 hover:text-red-700': isFavorite,
+            'text-gray-500 hover:text-gray-700': !isFavorite,
+          }"
         >
           favorite
         </i>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { getArrayValues } from "@/utils/api/getArrayValues";
 import type MoviesInterface from "@/utils/interfaces/moviesInterface"
 import type PlanetInterface from "@/utils/interfaces/planetInterface"
 import axios from "axios"
@@ -14,33 +15,18 @@ console.log("props", planet)
 const residents = ref<string[]>([])
 const films = ref<string[]>([])
 
-const getFilms = async () => {
-  planet?.films.forEach(async (film: string) => {
-    try {
-      const result = await axios.get(film)
-      films.value.push(result.data.title)
-    } catch (error) {
-      console.log(error)
-      return null
-    }
-  })
-}
-
-const getResidents = async () => {
-  planet?.residents.forEach(async (resident: string) => {
-    try {
-      const result = await axios.get(resident)
-      residents.value.push(result.data.name)
-    } catch (error) {
-      console.log(error)
-      return null
-    }
-  })
-}
-
 onBeforeMount(async () => {
-  await getFilms()
-  await getResidents()
+
+  planet?.films.forEach(async (film: string) => {
+    const movie: any = await getArrayValues(film)
+    films.value.push(movie.title)
+  })
+
+  planet?.residents.forEach(async (resident: string) => {
+    const res: any = await getArrayValues(resident)
+    residents.value.push(res.name)
+  })
+  
 })
 </script>
 
